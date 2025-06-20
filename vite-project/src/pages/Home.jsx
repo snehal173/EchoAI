@@ -40,6 +40,18 @@ const Home = () => {
     }
   }
 
+  async function deleteProject(projectId){
+     try{
+      const response=await axios.delete(serverUrl+`/api/v1/projects/delete/${projectId}`,{withCredentials:true})
+     if(response.status===200){
+      toast.success("project deleted successfully")
+     }
+
+     }catch(error){
+       console.log(error)
+     }
+  }
+
   useEffect(()=>{
     fetchProjects();
   },[])
@@ -62,7 +74,10 @@ const Home = () => {
                 <div key={project._id} className='flex items-center justify-start  border-2 border-gray-400 rounded-md flex-wrap w-[150px] h-[50px] gap-2.5 cursor-pointer hover:bg-gray-200 transition-all duration-300 ' 
                 onClick={()=>navigate('/project',{state:{project}})}> 
                  <div className='flex flex-col   '>
-                  <div className='text-[17px]'>{project.name}  </div>
+                  <div className='flex justify-between items-center'>
+                    <div className='text-[17px]'>{project.name}  </div>
+                    <i className="ri-delete-bin-line" onClick={deleteProject(project._id)}></i>
+                  </div>
                  <div className='flex px-1  items-center gap-1 text-gray-700'> 
                   <i className="ri-user-line"></i>
                   <p>Collaborators:{project.users.length}</p>

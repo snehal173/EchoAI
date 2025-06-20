@@ -14,7 +14,7 @@ import hljs from 'highlight.js';
 function SyntaxHighlightedCode(props) {
     const ref = useRef(null)
 
-        useEffect(() => {
+      useEffect(() => {
         if (ref.current && props.className?.includes('lang-') && window.hljs) {
             window.hljs.highlightElement(ref.current)
 
@@ -100,13 +100,13 @@ const ProjectPage = () => {
   function WriteAiMessage(message) {
 
         console.log(message)
-
+         const messageObject = JSON.parse(message)
         return (
             <div
                 className='overflow-auto bg-slate-950 text-white rounded-sm p-2'
             >
                 <Markdown
-                    children={message.text}
+                    children={messageObject.text}
                     options={{
                         overrides: {
                             code: SyntaxHighlightedCode,
@@ -141,9 +141,9 @@ const ProjectPage = () => {
   console.log(messages);
   return (
     <main className='h-screen w-screen flex '>
-     <section className='left min-w-60 bg-gray-400 h-full flex flex-col'>
+     <section className='left min-w-64 bg-slate-300 h-full flex flex-col relative'>
   {/* Header */}
-  <header className='flex w-full justify-between p-4 bg-slate-200 h-[9%]  items-center' >
+  <header className='flex absolute w-full justify-between px-4 p-2 bg-slate-100 z-10 top-0  items-center' >
     <div className='flex items-center justify-center gap-2 text-md font-medium cursor-pointer' onClick={()=>setOpenModal(!openModal)}>
       <i className="ri-add-line"></i>
       <div >Add collaborators</div>
@@ -153,30 +153,33 @@ const ProjectPage = () => {
 
   {/* Messages container */}
   
-  <div className='message-box w-full flex flex-col gap-1.5 px-2 overflow-y-auto flex-grow mt-1 scrollbar-hide'>
-    
-   {messages.map((msg, index) => (
-    
-    <div
-      key={index}
-      className={` ${msg.sender?._id=='ai' ? "max-w-80":"max-w-52"}
-      
-        ${
-        msg.sender?._id == userdata._id ? 'self-end bg-blue-100' : 'self-start bg-slate-100'
-      } flex flex-col max-w-[270px] rounded-md text-[15px] tracking-tight px-3 py-2`}
-    >
-      
-      <p className="text-xs font-medium text-gray-600">
-       {userdata._id == msg.sender._id ? 'You' : msg.sender?.email}
-      </p>
-      {
-        msg.sender?._id=='ai'? WriteAiMessage(msg.message):<p>{msg.message}</p>
-      }
-      {/* <p>{msg.message}</p> */}
-    </div>
-  ))}
-  </div>
   
+  <div className="conversation-area pt-14 pb-10 flex-grow flex flex-col h-full relative">
+
+                    <div
+                        
+                        className="message-box p-1 flex flex-grow flex-col gap-1 ">
+                       {messages.map((msg, index) => {
+  const isUser = msg.sender?._id === userdata?._id.toString();
+  const isAI = msg.sender?._id === 'ai';
+  const maxWidth = isAI ? 'max-w-80' : 'max-w-52';
+
+  return (
+    <div key={index} className={`w-full flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+      <div className={`message ${maxWidth} flex flex-col p-2 bg-slate-50 w-fit rounded-md`}>
+        <small className="opacity-65 text-xs">{isAI ? 'AI' : msg.sender?.email}</small>
+        <div className="text-sm">
+          {isAI ? WriteAiMessage(msg.message) : <p>{msg.message}</p>}
+        </div>
+      </div>
+    </div>
+  );
+})}
+
+                    </div>
+
+
+  </div>
 
   {/* Message input at the bottom */}
   <div className='flex items-center gap-3 px-2 py-2 bg-slate-200'>

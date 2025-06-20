@@ -123,3 +123,29 @@ export const getProjectById=async(req,res)=>{
         })
     }
 }
+
+export const deleteProject=async(req,res)=>{
+    try{
+        const { projectId } = req.params;
+
+    const project = await projectModel.findByIdAndDelete(projectId);
+
+    if (!project) {
+      return res.status(404).json({
+        message: "Project not found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Project deleted successfully",
+    });
+
+       
+    }
+    catch(error){
+        console.log("error while delete project by id",error);
+        return res.status(500).json({
+            message:"Internal server error while getting project by id"
+        })
+    }
+}

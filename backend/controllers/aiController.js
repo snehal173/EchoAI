@@ -1,4 +1,4 @@
-import { generateResult } from "../config/ai.js";
+import { generateResult } from "../config/gemini.js";
 
 
 export const getresult=async(req,res)=>{

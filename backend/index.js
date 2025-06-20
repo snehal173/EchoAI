@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import projectModel from './models/projectModel.js';
 import userModel from './models/userModel.js';
-import { generateResult } from './config/ai.js';
+import { generateResult } from './config/gemini.js';
 dotenv.config();
 
 const server=http.createServer(app);
