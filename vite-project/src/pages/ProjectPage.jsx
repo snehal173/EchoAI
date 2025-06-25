@@ -1,7 +1,7 @@
 import React, { useContext, useEffect,useRef } from 'react'
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
-;
+
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { initializeSocket, receiveMessage, sendMessage } from '../config/socket'
