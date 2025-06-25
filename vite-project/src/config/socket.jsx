@@ -8,7 +8,7 @@ let socketInstance = null;
 
 
    export const initializeSocket = (projectId) => {
-  socketInstance = socket('http://localhost:4000', {
+  socketInstance = socket('https://echoai-2.onrender.com', {
     withCredentials: true,
     query: {
       projectId,
