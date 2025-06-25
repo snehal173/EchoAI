@@ -1,7 +1,7 @@
 import React, { useContext, useEffect,useRef } from 'react'
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { authDataContext } from '../context/authcontext';
+;
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { initializeSocket, receiveMessage, sendMessage } from '../config/socket'
@@ -11,6 +11,7 @@ import Editor from "@monaco-editor/react";
 
 
 import { getWebContainer } from '../config/webContainer';
+import { serverDataContext } from '../context/ServerContext';
 
 
 function SyntaxHighlightedCode(props) {
@@ -38,7 +39,7 @@ const ProjectPage = () => {
   const [openModal,setOpenModal]=useState(false);
   const [allusers,setAllusers]=useState([]);
   const [selectedUserId,setSelectedUserId]=useState(new Set())
-  const {serverUrl}=useContext(authDataContext);
+  const {serverUrl}=useContext(serverDataContext);
   const [projects,setProjects]=useState(location.state.project)
   const [message,setMessage]=useState('')
   const {userdata}=useContext(userDataContext)

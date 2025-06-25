@@ -1,14 +1,15 @@
 import React, { useContext, useEffect } from 'react'
 import { createContext,useState } from 'react'
-import { authDataContext } from './authcontext';
+
 import axios from 'axios';
+import { serverDataContext } from './ServerContext';
 export const userDataContext=createContext();
 
 
 
 const userContext = ({children}) => {
     const [userdata,setUserData]=useState(null);
-    const {serverUrl}=useContext(authDataContext)
+    const {serverUrl}=useContext(serverDataContext)
     const [theme, setTheme] = useState("light");
     const getCurrentUser=async()=>{
   try{

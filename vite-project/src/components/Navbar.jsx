@@ -4,12 +4,13 @@ import { userDataContext } from '../context/userContext'
 import logo from "../assets/chat_logo.png"
 import toast from 'react-hot-toast'
 import axios from 'axios'
-import { authDataContext } from '../context/authcontext'
+
 import { useNavigate } from 'react-router-dom'
+import { serverDataContext } from '../context/ServerContext'
 const Navbar = () => {
     const {userdata,setUserData,theme,setTheme}=useContext(userDataContext)
    const [openModal, setOpenModal] = useState(false);
-   const serverUrl=useContext(authDataContext)
+   const {serverUrl}=useContext(serverDataContext)
    const navigate=useNavigate()
    console.log(userdata)
    async function logoutHandler() {

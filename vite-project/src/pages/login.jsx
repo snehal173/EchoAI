@@ -4,18 +4,18 @@ import logo from '../assets/chat_logo.png'
 import { Link } from 'react-router-dom'
 import img from '../assets/chatbot.jpg'
 import { useContext } from 'react'
-import { authDataContext } from '../context/authcontext'
+
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { userDataContext } from '../context/userContext'
 import toast from 'react-hot-toast';
-import { signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../config/firebase'
+import { serverDataContext } from '../context/ServerContext'
+
 const login = () => {
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     const [show,setShow]=useState(false)
-    const {serverUrl}=useContext(authDataContext)
+    const {serverUrl}=useContext(serverDataContext)
     const {setUserData}=useContext(userDataContext);
     const navigate=useNavigate();
     const loginHandler=async(e)=>{

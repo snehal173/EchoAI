@@ -1,16 +1,17 @@
 import axios from 'axios';
 import React, { useState,useContext } from 'react';
-import { authDataContext } from '../context/authcontext';
+
 import toast from 'react-hot-toast';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { userDataContext } from '../context/userContext';
+import { serverDataContext } from '../context/ServerContext';
 const Home = () => {
   const [projectName, setProjectName] = useState('');
   const [showform,setShowForm]=useState(false);
   const [projects,setProjects]=useState([]);
-  const {serverUrl}=useContext(authDataContext)
+  const {serverUrl}=useContext(serverDataContext)
   const {theme}=useContext(userDataContext)
   const navigate=useNavigate();
   

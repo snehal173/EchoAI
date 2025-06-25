@@ -4,16 +4,15 @@ import logo from '../assets/chat_logo.png'
 import { Link, useNavigate } from 'react-router-dom'
 import img from '../assets/signupimg.jpg'
 import { userDataContext } from '../context/userContext'
-import { authDataContext } from '../context/authcontext'
 import toast from 'react-hot-toast';
 import axios from 'axios'
-import { signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../config/firebase'
+import { serverDataContext } from '../context/ServerContext'
+
 const signup = () => {
     const [email,setEmail]=useState('')
     const [show,setShow]=useState(false)
     const [password,setPassword]=useState('')
-    const {serverUrl}=useContext(authDataContext)
+    const {serverUrl}=useContext(serverDataContext)
     const {setUserData}=useContext(userDataContext);
    const navigate=useNavigate();
     
