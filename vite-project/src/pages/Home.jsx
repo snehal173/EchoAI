@@ -4,29 +4,17 @@ import { authDataContext } from '../context/authcontext';
 import toast from 'react-hot-toast';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import { userDataContext } from '../context/userContext';
 const Home = () => {
   const [projectName, setProjectName] = useState('');
   const [showform,setShowForm]=useState(false);
   const [projects,setProjects]=useState([]);
   const {serverUrl}=useContext(authDataContext)
+  const {theme}=useContext(userDataContext)
   const navigate=useNavigate();
-  async function ProjectHandler(){
-    try{
-      const response=await axios.post(serverUrl+'/api/v1/projects/create',{
-        name:projectName}
-      ,{withCredentials:true})
-
-      if(response.status===201){
-        setProjectName('');
-        setShowForm(false);
-        toast.success('Project created successfully!');
-      }
-    }catch(error){
-      console.log("error ehile creating the project",error);
-    }
-  }
-
-  async function fetchProjects(){
+  
+   async function fetchProjects(){
     try{
        const response=await axios.get(serverUrl+'/api/v1/projects/all',{withCredentials:true});
        console.log(response);
@@ -40,11 +28,34 @@ const Home = () => {
     }
   }
 
+
+  async function ProjectHandler(e){
+    e.preventDefault()
+    try{
+      const response=await axios.post(serverUrl+'/api/v1/projects/create',{
+        name:projectName}
+      ,{withCredentials:true})
+
+      if(response.status===201){
+        setProjectName('');
+        setShowForm(false);
+        toast.success('Project created successfully!');
+        await fetchProjects();
+      }
+    }catch(error){
+      console.log("error ehile creating the project",error);
+    }
+  }
+
+  
+
+ 
   async function deleteProject(projectId){
      try{
       const response=await axios.delete(serverUrl+`/api/v1/projects/delete/${projectId}`,{withCredentials:true})
      if(response.status===200){
       toast.success("project deleted successfully")
+      await fetchProjects()
      }
 
      }catch(error){
@@ -57,39 +68,52 @@ const Home = () => {
   },[])
 
   return (
-    <div className="relative min-h-screen">
-       
-      {/* Top-left New Project button */}
-      <div className="flex absolute top-4 left-4 gap-4">
-        <div className="flex justify-center items-center border-2 border-gray-400 rounded-md w-[200px] h-[50px] px-4 cursor-pointer hover:bg-gray-100 transition" 
-        onClick={()=>setShowForm(true)}>
-          <div className="text-[20px] font-semibold">New Project</div>
-          <i className="ri-add-line ml-2 text-[22px]"></i>
-        </div>
+      <div className={`relative min-h-screen ${theme === "light" ? "bg-white" : "bg-black"}`}>
+  <Navbar />
 
-        <div className='flex  gap-4 flex-wrap   '>
-          {
-            projects.map((project)=>{
-              return (
-                <div key={project._id} className='flex items-center justify-start  border-2 border-gray-400 rounded-md flex-wrap w-[150px] h-[50px] gap-2.5 cursor-pointer hover:bg-gray-200 transition-all duration-300 ' 
-                onClick={()=>navigate('/project',{state:{project}})}> 
-                 <div className='flex flex-col   '>
-                  <div className='flex justify-between items-center'>
-                    <div className='text-[17px]'>{project.name}  </div>
-                    <i className="ri-delete-bin-line" onClick={deleteProject(project._id)}></i>
-                  </div>
-                 <div className='flex px-1  items-center gap-1 text-gray-700'> 
-                  <i className="ri-user-line"></i>
-                  <p>Collaborators:{project.users.length}</p>
-                 </div>
+  {/* Top-left New Project button */}
+  <div className="flex absolute top-18 left-4 gap-4">
+    <div
+      className={`flex justify-center items-center border-2 rounded-md w-[200px] h-[50px] px-4 cursor-pointer transition ${
+        theme === "light" ? "border-gray-400 hover:bg-gray-100 text-black" : "border-white hover:bg-gray-800 text-white"
+      }`}
+      onClick={() => setShowForm(true)}
+    >
+      <div className="text-[20px] font-semibold">New Project</div>
+      <i className="ri-add-line ml-2 text-[22px]"></i>
+    </div>
 
-                  </div>
-                </div>
-              )
-            })
-          }
+    <div className="flex gap-4 flex-wrap">
+      {projects.map((project) => (
+        <div
+          key={project?._id}
+          className={`flex items-center justify-start border-2 rounded-md flex-wrap w-[150px] h-[50px] gap-2.5 px-2 transition-all duration-300 ${
+            theme === "light" ? "border-gray-400 hover:bg-gray-200 text-black" : "border-white hover:bg-gray-800 text-white"
+          }`}
+        >
+          <div className="flex flex-col w-full">
+            <div className="flex justify-between items-center">
+              <div
+                className="text-[17px] cursor-pointer"
+                onClick={() => navigate("/project", { state: { project } })}
+              >
+                {project?.name}
+              </div>
+              <i
+                className="ri-delete-bin-line cursor-pointer"
+                onClick={() => deleteProject(project._id)}
+              ></i>
+            </div>
+            <div className="flex items-center gap-1 text-sm">
+              <i className="ri-user-line"></i>
+              <p>Collaborators: {project?.users?.length}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+
 
       {/* Centered Create Project Form */}
       {showform &&

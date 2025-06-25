@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 import projectModel from "../models/projectModel.js";
 
+import dataModel from "../models/dataModel.js";
+
 export const createProject=async(req,res)=>{
     try{
         const {name}=req.body;
+        const userId=req.user._id;
         if(!name){
             return res.status(400).json({message:"Project name is required"});
         }
-        const isprojectexists=await projectModel.findOne({name});
+        const isprojectexists=await projectModel.findOne({name,users:[userId]});
         if(isprojectexists){
             return res.status(400).json({message:"Project already exists with this name"});
         }
@@ -15,6 +18,10 @@ export const createProject=async(req,res)=>{
         const project=await projectModel.create({
             name,
             users:[req.user._id]
+        })
+        await dataModel.create({
+            projectId:project._id,
+            messages:[]
         })
         return res.status(201).json({
             message:"Project created successfully",
@@ -127,7 +134,12 @@ export const getProjectById=async(req,res)=>{
 export const deleteProject=async(req,res)=>{
     try{
         const { projectId } = req.params;
-
+        if (!projectId) {
+      return res.status(404).json({
+        message: "Project not found",
+      });
+    }
+    await dataModel.deleteOne({ projectId });
     const project = await projectModel.findByIdAndDelete(projectId);
 
     if (!project) {
@@ -135,6 +147,7 @@ export const deleteProject=async(req,res)=>{
         message: "Project not found",
       });
     }
+    
 
     return res.status(200).json({
       message: "Project deleted successfully",
@@ -149,3 +162,71 @@ export const deleteProject=async(req,res)=>{
         })
     }
 }
+
+export const updateFileTree=async(req,res)=>{
+    try{
+        const {projectId,fileTree}=req.body;
+    if(!projectId){
+        return res.status(400).json(
+            {
+               message:"projectId is missing"
+            }
+        )
+
+    }
+    if(!mongoose.Types.ObjectId.isValid(projectId)){
+        
+         return res.status(400).json(
+            {
+               message:"projectId is invalid"
+            }
+        )
+    }
+    if(!fileTree){
+        return res.status(400).json(
+            {
+               message:"fileTree is required"
+            }
+        )
+
+    }
+
+    const project=await projectModel.findOneAndUpdate({
+        _id:projectId
+    },{
+        fileTree
+    },{
+        new:true
+    })
+
+    return res.status(200).json({
+        project
+    })
+
+    }catch(error){
+       console.log(error)
+       res.status(400).json({
+        error:error.message,
+        message:"error in updatitng filetree"
+       })
+    }
+}
+
+export const getMessagesByProjectId = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    const messageDoc = await dataModel.findOne({ projectId });
+
+    if (!messageDoc) {
+      return res.status(404).json({ message: "No messages found for this project" });
+    }
+
+    return res.status(200).json({ messages: messageDoc.messages });
+
+  } catch (error) {
+    console.log("Error fetching messages", error);
+    console.error("Error fetching messages:", error); // THIS w
+    return res.status(500).json({ message: "Internal server error while getting messages" });
+  }
+};

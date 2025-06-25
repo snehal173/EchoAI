@@ -7,15 +7,21 @@ export const userDataContext=createContext();
 
 
 const userContext = ({children}) => {
-    const [userdata,setUserData]=useState({});
+    const [userdata,setUserData]=useState(null);
     const {serverUrl}=useContext(authDataContext)
+    const [theme, setTheme] = useState("light");
     const getCurrentUser=async()=>{
   try{
     const response=await axios.get(serverUrl+'/api/v1/auth/profile',{withCredentials:true})
     console.log("userdata in userdatacontextfile",response)
-     setUserData(response.data.user)
+   
+       setUserData(response.data.user)
+       setLoading(false)
+    
+    
   }catch(error){
     console.log(error)
+    // setUserData(null); 
   }
 }
 
@@ -24,7 +30,7 @@ const userContext = ({children}) => {
     },[])
 
     
-    const value={userdata,setUserData};
+    const value={userdata,setUserData,theme,setTheme};
 
   return (
     

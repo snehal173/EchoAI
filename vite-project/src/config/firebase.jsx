@@ -1,6 +1,8 @@
 import {getAuth, GoogleAuthProvider} from "firebase/auth"
 import { initializeApp } from "firebase/app";
 
+console.log("api key:=",import.meta.env.VITE_FIREBASE_API_KEY);
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "chatapplication-58e23.firebaseapp.com",

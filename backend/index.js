@@ -8,7 +8,9 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import projectModel from './models/projectModel.js';
 import userModel from './models/userModel.js';
+import messageModel from './models/messageModel.js';
 import { generateResult } from './config/gemini.js';
+import dataModel from './models/dataModel.js';
 dotenv.config();
 
 const server=http.createServer(app);
@@ -61,7 +63,10 @@ io.use(async(socket,next)=>{
 })
 
 io.on('connection',socket=>{
-    socket.roomId=socket.project._id.toString()
+    
+
+
+    socket.roomId=socket.project?._id.toString()
     console.log('a user is connected');
     socket.join(socket.roomId);
 
@@ -71,19 +76,22 @@ io.on('connection',socket=>{
   try {
     
     const message=data.message
+    // const userId=data.sender
+    // const projectId=data.projectId
     const aiIsPresentInMessage = message.includes('@ai');
-
+   
     const user = await userModel.findById(data.sender);
     if (!user) return;
-
     
+    const id=socket.project._id;
+    await dataModel.findOneAndUpdate({projectId:id},{$push:{messages:{sender:user,message:message}}})
 
     socket.broadcast.to(socket.roomId).emit('project-message', {sender:user,message:message});
 
     if (aiIsPresentInMessage) {
       const prompt = message.replace('@ai', '');
       const result = await generateResult(prompt);
-      console.log(result);
+     // console.log(result);
      
       io.to(socket.roomId).emit('project-message', {
         message:result,

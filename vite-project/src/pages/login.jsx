@@ -59,59 +59,97 @@ const login = () => {
             console.log("error while doing registeration with google using firebase")
         }
        }
-  return (
-    <div className='w-full h-100vh flex justify-center items-center  '>
-        <img src={img} className='w-[50%]  '/>
-        <div className='flex flex-col items-center justify-center gap-4 w-[50%] bg-white '>
-        <div className='flex justify-center items-center gap-[2px] '>
-            <img src={logo} className='w-[100px] h-[70px]' />
-            <div className='text-3xl font-bold '>Echo Ai</div>
+   return (
+  <div className="min-h-screen w-full flex flex-col-reverse lg:flex-row">
+    {/* Left: Image Section */}
+    <img
+      src={img}
+      alt="Illustration"
+      className="w-full h-[250px] object-cover lg:h-screen lg:w-1/2"
+    />
+
+    {/* Right: Form Section */}
+    <div className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center p-6 lg:p-12">
+      {/* Logo & Title */}
+      <div className="flex items-center gap-2 mb-6">
+        <img src={logo} alt="Logo" className="w-[80px] h-[60px]" />
+        <div className="text-3xl font-bold">Echo AI</div>
+      </div>
+
+      <div className="text-2xl lg:text-3xl font-semibold mb-6 text-center">
+        Welcome Back!
+      </div>
+
+      {/* Form */}
+      <form
+        onSubmit={loginHandler}
+        className="flex flex-col gap-4 items-center w-full max-w-md"
+      >
+        {/* Google Login */}
+        <div
+          onClick={googleSignIn}
+          className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:shadow-md transition w-full"
+        >
+          <i className="ri-google-fill"></i>
+          <span className="text-base font-medium">Login with Google</span>
         </div>
 
-        <div className='text-3xl font-semibold mb-4'>Welcome Back!</div>
-
-        <form className='flex flex-col gap-4 items-center justify-center w-[80%] '
-        onSubmit={loginHandler}>
-             <div className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:shadow-md transition"
-            onClick={googleSignIn}>
-                <i class="ri-google-fill"></i>
-                 <span className="text-base font-medium">Login with Google</span>
-            </div>
-            <div className='flex flex-col items-start justify-center gap-1 w-[80%]'>
-                <label >Email Address</label>
-                <input 
-                type='email' 
-                placeholder='Enter your email' 
-                value={email} 
-                onChange={(e)=>setEmail(e.target.value)} 
-                className='border-2 border-gray-400 rounded-md w-[100%] py-1'/>
-            </div>
-            <div className='flex flex-col items-start justify-center gap-1 w-[80%] '>
-                <label >Password</label>
-               <div className='flex items-center justify-between w-[100%] border-2 border-gray-400 rounded-md'>
-                    <input 
-                 type={show?'text':'password'} 
-                placeholder='Password' 
-                value={password} 
-                onChange={(e)=>setPassword(e.target.value)} 
-                 className='w-[100%]  py-1'/>
-
-                 <span className='mr-1 cursor-pointer' onClick={()=>setShow(prev=>!prev)}>{show?"hidden":"show"}</span>
-                </div>
-            </div>
-
-            <button className='cursor-pointer border-2 border-white bg-violet-500 w-[80%] rounded-md px-2 py-1.5 text-lg' type='submit'>Login</button>
-
-        </form>
-       <div className='w-[60%] border-b-2 border-gray-400 my-4'></div>
-
-       <p className='text-[18px]'>Don't have an account? <Link className='text-red-500 cursor-pointer' to='/signup'>Sign up</Link></p>
-
+        {/* Email */}
+        <div className="flex flex-col gap-1 w-full">
+          <label>Email Address</label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border-2 border-gray-400 rounded-md w-full py-2 px-3"
+          />
         </div>
 
+        {/* Password */}
+        <div className="flex flex-col gap-1 w-full">
+          <label>Password</label>
+          <div className="flex items-center justify-between border-2 border-gray-400 rounded-md px-3 w-full">
+            <input
+              type={show ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="py-2 w-full focus:outline-none"
+            />
+            <span
+              className="ml-2 text-sm text-blue-600 cursor-pointer"
+              onClick={() => setShow((prev) => !prev)}
+            >
+              {show ? "Hide" : "Show"}
+            </span>
+          </div>
+        </div>
 
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="bg-violet-500 hover:bg-violet-600 text-white w-full py-2 rounded-md text-lg font-semibold transition cursor-pointer"
+        >
+          Login
+        </button>
+      </form>
+
+      {/* Divider */}
+      <div className="w-full max-w-md border-b border-gray-300 my-6"></div>
+
+      {/* Signup Link */}
+      <p className="text-base text-center">
+        Don't have an account?{" "}
+        <Link to="/signup" className="text-red-500 font-medium">
+          Sign up
+        </Link>
+      </p>
     </div>
-  )
+  </div>
+);
+
+
 }
 
 export default login

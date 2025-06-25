@@ -44,76 +44,105 @@ const signup = () => {
         const response=await signInWithPopup(auth,provider)
         console.log(response)
 
-        // let user=response.user
-        // let name=user.displayName
-        // let email=user.email
-
-        // const result=await axios.post(serverUrl+'/api/v1/auth/google',{
-        //     name,email
-        // },{withCredentials:true})
-
-        // console.log(result)
+       
 
     }catch(error){
+        console.log(error)
         console.log("error while doing registeration with google using firebase")
     }
    }
 
-  return (
-    <div className='w-full h-100vh flex justify-center items-center  '>
-        <img src={img} className='w-[50%] h-screen  '/>
-        <div className='flex flex-col items-center justify-center gap-4 w-[50%] bg-white '>
-        <div className='flex justify-center items-center gap-[2px] '>
-            <img src={logo} className='w-[100px] h-[70px]' />
-            <div className='text-3xl font-bold '>Echo Ai</div>
+ return (
+  <div className="h-100vh w-full flex flex-col-reverse lg:flex-row justify-center">
+    {/* Image Section */}
+    <img
+      src={img}
+      alt="Side illustration"
+      className="w-full h-[250px]  lg:h-[650px] lg:w-1/2"
+    />
+
+    {/* Form Section */}
+    <div className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center p-6 lg:p-12">
+      {/* Logo & Title */}
+      <div className="flex items-center gap-2 mb-6">
+        <img src={logo} className="w-[80px] h-[70px]" alt="Echo AI Logo" />
+        <div className="text-3xl font-bold">Echo AI</div>
+      </div>
+
+      <div className="text-2xl lg:text-3xl font-semibold mb-6 text-center">
+        Welcome Back!
+      </div>
+
+      {/* Signup Form */}
+      <form
+        onSubmit={signupHandler}
+        className="flex flex-col gap-4 items-center w-full max-w-md"
+      >
+        {/* Google Signup */}
+        <button
+  type="button"
+  onClick={googleSignUp}
+  className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:shadow-md transition w-full"
+>
+  <i className="ri-google-fill"></i>
+  <span className="text-base font-medium">Sign up with Google</span>
+</button>
+
+        {/* Email Field */}
+        <div className="flex flex-col gap-1 w-full">
+          <label>Email Address</label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border-2 border-gray-400 rounded-md w-full py-2 px-3"
+          />
         </div>
 
-        <div className='text-3xl font-semibold mb-4'>Welcome Back!</div>
-
-        <form className='flex flex-col gap-4 items-center justify-center w-[80%]' onSubmit={signupHandler}>
-
-            <div className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:shadow-md transition"
-            onClick={googleSignUp}>
-                <i class="ri-google-fill"></i>
-                 <span className="text-base font-medium">Sign up with Google</span>
-            </div>
-
-
-            <div className='flex flex-col items-start justify-center gap-1 w-[80%]'>
-                <label >Email Address</label>
-                <input 
-                type='email' 
-                placeholder='Enter your email' 
-                value={email} 
-                onChange={(e)=>setEmail(e.target.value)} 
-                className='border-2 border-gray-400 rounded-md w-[100%] py-1'/>
-            </div>
-            <div className='flex flex-col items-start justify-center gap-1 w-[80%] '>
-                <label >Password</label>
-                <div className='flex items-center justify-between w-[100%] border-2 border-gray-400 rounded-md'>
-                    <input 
-                 type={show?'text':'password'} 
-                placeholder='Password' 
-                value={password} 
-                onChange={(e)=>setPassword(e.target.value)} 
-                 className='  py-1'/>
-
-                 <span className='mr-1 cursor-pointer' onClick={()=>setShow(prev=>!prev)}>{show?"hidden":"show"}</span>
-                </div>
-            </div>
-
-            <button className=' cursor-pointer border-2 border-white bg-blue-500 w-[80%] rounded-md px-2 py-1.5 text-lg' type='submit'>SignUp</button>
-
-        </form>
-       <div className='w-[60%] border-b-2 border-gray-400 my-4'></div>
-
-       <p className='text-[18px]'>Already have an account? <Link className='text-red-500 cursor-pointer' to='/login'>Log In</Link></p>
-
+        {/* Password Field */}
+        <div className="flex flex-col gap-1 w-full">
+          <label>Password</label>
+          <div className="flex items-center justify-between border-2 border-gray-400 rounded-md w-full px-3">
+            <input
+              type={show ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="py-2 w-full focus:outline-none"
+            />
+            <span
+              className="ml-2 text-sm cursor-pointer text-blue-500"
+              onClick={() => setShow((prev) => !prev)}
+            >
+              {show ? "Hide" : "Show"}
+            </span>
+          </div>
         </div>
 
+        {/* Signup Button */}
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white w-full py-2 rounded-md text-lg font-semibold transition cursor-pointer"
+        >
+          Sign Up
+        </button>
+      </form>
 
+      {/* Divider */}
+      <div className="w-full max-w-md border-b border-gray-300 my-6"></div>
+
+      {/* Redirect */}
+      <p className="text-base text-center">
+        Already have an account?{" "}
+        <Link className="text-red-500 font-medium" to="/login">
+          Log In
+        </Link>
+      </p>
     </div>
-  )
+  </div>
+);
+
 }
 
 export default signup

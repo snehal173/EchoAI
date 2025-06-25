@@ -1,6 +1,7 @@
-
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
+dotenv.config()
 //import redisClient from '../config/redis.js';
 export const authUser=async(req,res,next)=>{
     try{
@@ -10,13 +11,7 @@ export const authUser=async(req,res,next)=>{
                 message:"token is missing"
             })
         }
-        // const blacklistedToken=await redisClient.get(token);
-        // if(blacklistedToken){
-        //     res.clearCookie("token");
-        //     return res.status(401).json({
-        //         message:"You are logged out ,please login again"
-        //     })
-        // }
+       
         const decoded=jwt.verify(token,process.env.JWT_SECRET);
           const userId = decoded.id;
             if(!userId){

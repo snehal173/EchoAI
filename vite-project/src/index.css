@@ -3,6 +3,15 @@
 .message-box{
   scroll-behavior: smooth;
 }
-.message-box::-webkit-scrollbar{
-  display: none;
+.message-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-box::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 10px;
+}
+
+.message-box::-webkit-scrollbar-track {
+  background: transparent;
 }

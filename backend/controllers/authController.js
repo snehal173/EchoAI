@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcypt from 'bcrypt';
-//import redisClient from '../config/redis.js';
+
 import userModel from '../models/userModel.js';
 
 export const register=async(req,res)=>{
@@ -26,8 +26,8 @@ export const register=async(req,res)=>{
         res.cookie("token",token,{
         httpOnly:true,
         maxAge:7*24*60*60*1000,
-        sameSite:"None",
-        secure:true
+        sameSite: "Lax", // ✅ Safe for same-origin requests
+        secure: false,   // ✅ Don't use HTTPS in development
        })
         return res.status(201).json({
             message:"User registered successfully",
@@ -66,11 +66,11 @@ export const login=async(req,res)=>{
             })
         }
         const token=jwt.sign({id:existingUser._id},process.env.JWT_SECRET,{expiresIn:"7d"})
-         res.cookie("token",token,{
+        res.cookie("token",token,{
         httpOnly:true,
         maxAge:7*24*60*60*1000,
-        sameSite:"None",
-        secure:true
+        sameSite: "Lax", // ✅ Safe for same-origin requests
+         secure: false,   // ✅ Don't use HTTPS in development
         })
         return res.status(201).json({
             message:"User login successfully",
@@ -89,10 +89,22 @@ export const login=async(req,res)=>{
 }
 
 export const getProfile=async(req,res)=>{
+   try{
+    const user=req.user;
+    if(!user){
+        return res.status(400).json({message:"user does not exist"})
+    }
    return res.status(200).json({
     message:"User profile fetched succesfully",
-    user:req.user
+    user
    })
+
+   }catch(error){
+    console.log(error);
+    return res.status(400).json({
+        message:"get current user error"
+    })
+   }
 }
 
 export const logout =async(req,res)=>{
@@ -105,7 +117,7 @@ export const logout =async(req,res)=>{
         //  }
 
         //  redisClient.set(token,'logout','EX',60*60*24*7);
-        res.clearCookie("token");
+         res.clearCookie("token");
          res.status(200).json({
                 message:"User logged out successfully"
          })
