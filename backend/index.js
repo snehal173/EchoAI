@@ -18,7 +18,7 @@ const PORT=process.env.PORT || 3000;
 
 const io=new Server(server,{
     cors:{
-        origin:'https://echoai-client.onrender.com',
+        origin:'echo-ai-ochre.vercel.app',
          methods: ['GET', 'POST'],
         credentials: true
     }
