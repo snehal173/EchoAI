@@ -18,7 +18,7 @@ const PORT=process.env.PORT || 3000;
 
 const io=new Server(server,{
     cors:{
-        origin:'echo-ai-ochre.vercel.app',
+        origin:'https://echo-ai-ochre.vercel.app',
          methods: ['GET', 'POST'],
         credentials: true
     }
