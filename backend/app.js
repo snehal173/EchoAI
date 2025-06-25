@@ -7,7 +7,7 @@ import aiRoutes from './routes/aiRoutes.js'
 import cors from 'cors'
 const app=express()
 app.use(cors({
-    origin:'echo-ai-ochre.vercel.app',
+    origin:'https://echo-ai-ochre.vercel.app',
     credentials:true,
 }));
 app.use(morgan('dev'))
