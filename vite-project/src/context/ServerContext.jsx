@@ -1,7 +1,7 @@
 import React from 'react'
 import { createContext } from 'react'
 
-const serverUrl="http://localhost:4000"
+const serverUrl="https://echoai-2.onrender.com"
 export const serverDataContext=createContext()
 
 export const ServerContext = ({children}) => {
