@@ -3,7 +3,7 @@
 import React from 'react'
 import { createContext } from 'react'
 export const authDataContext=createContext()
-const serverUrl="http://localhost:4000"
+const serverUrl="https://echoai-2.onrender.com"
 
 
 
