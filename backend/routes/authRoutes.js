@@ -4,7 +4,7 @@ import { authUser } from "../middleware/authMiddleware.js";
 const router=Router();
 
 router.post("/register",register);
-router.post("/google",googleLogin);
+
 router.post("/login",login);
 router.get("/profile",authUser,getProfile);
 router.get("/all",authUser,getAllUsers);

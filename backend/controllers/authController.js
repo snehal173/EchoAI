@@ -147,36 +147,3 @@ export const getAllUsers=async(req,res)=>{
     }
 }
 
-export const googleLogin=async(req,res)=>{
-    try{
-        let {name,email}=req.body;
-        let user=await userModel.findOne({email})
-
-        if(!user){
-            user=await userModel.create({
-                name,email
-            })
-        }
-
-        let token= jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"})
-
-        res.cookie("token",token,{
-        httpOnly:true,
-        maxAge:7*24*60*60*1000,
-        sameSite:"None",
-        secure:true
-       })
-        return res.status(201).json({
-            message:"User registered successfully",
-            user,
-            token
-        })
-
-    }catch(error){
-      console.log("error while signup",error);
-       
-        return res.status(500).json({
-            message:"google login error"
-        })
-    }
-}

@@ -39,18 +39,7 @@ const signup = () => {
     }
    }
 
-   const googleSignUp=async()=>{
-    try{
-        const response=await signInWithPopup(auth,provider)
-        console.log(response)
-
-       
-
-    }catch(error){
-        console.log(error)
-        console.log("error while doing registeration with google using firebase")
-    }
-   }
+   
 
  return (
   <div className="h-100vh w-full flex flex-col-reverse lg:flex-row justify-center">
@@ -78,15 +67,8 @@ const signup = () => {
         onSubmit={signupHandler}
         className="flex flex-col gap-4 items-center w-full max-w-md"
       >
-        {/* Google Signup */}
-        <button
-  type="button"
-  onClick={googleSignUp}
-  className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:shadow-md transition w-full"
->
-  <i className="ri-google-fill"></i>
-  <span className="text-base font-medium">Sign up with Google</span>
-</button>
+        
+       
 
         {/* Email Field */}
         <div className="flex flex-col gap-1 w-full">

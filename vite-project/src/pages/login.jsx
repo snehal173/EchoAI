@@ -40,25 +40,7 @@ const login = () => {
 
         }
     }
-    const googleSignIn=async()=>{
-        try{
-            const response=await signInWithPopup(auth,provider)
-            console.log(response)
-    
-            // let user=response.user
-            // let name=user.displayName
-            // let email=user.email
-    
-            // const result=await axios.post(serverUrl+'/api/v1/auth/google',{
-            //     name,email
-            // },{withCredentials:true})
-    
-            // console.log(result)
-    
-        }catch(error){
-            console.log("error while doing registeration with google using firebase")
-        }
-       }
+   
    return (
   <div className="min-h-screen w-full flex flex-col-reverse lg:flex-row">
     {/* Left: Image Section */}
@@ -85,14 +67,8 @@ const login = () => {
         onSubmit={loginHandler}
         className="flex flex-col gap-4 items-center w-full max-w-md"
       >
-        {/* Google Login */}
-        <div
-          onClick={googleSignIn}
-          className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:shadow-md transition w-full"
-        >
-          <i className="ri-google-fill"></i>
-          <span className="text-base font-medium">Login with Google</span>
-        </div>
+       
+        
 
         {/* Email */}
         <div className="flex flex-col gap-1 w-full">
