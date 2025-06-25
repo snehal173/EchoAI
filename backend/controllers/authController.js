@@ -26,8 +26,8 @@ export const register=async(req,res)=>{
         res.cookie("token",token,{
         httpOnly:true,
         maxAge:7*24*60*60*1000,
-        sameSite: "Lax", // ✅ Safe for same-origin requests
-        secure: false,   // ✅ Don't use HTTPS in development
+       secure: true,          
+      sameSite: "None" 
        })
         return res.status(201).json({
             message:"User registered successfully",
